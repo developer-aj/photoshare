@@ -2,6 +2,12 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib import admin
 
+from string import join
+
+import os
+from PIL import Image as PImage
+from settings import MEDIA_ROOT
+
 class Album(models.Model):
 	title = models.CharField(max_length=60)
 	public = models.BooleanField(default=False)
@@ -26,6 +32,13 @@ class Image(models.Model):
 
 	def __unicode__(self):
 		return self.image.name
+
+	def save(self, *args, **kwargs):
+		"""Save image dimensions."""
+		super(Image, self).save(*args, **kwargs)
+		im = PImage.open(os.path.join(MEDIA_ROOT, self.image.name))
+		self.width, self.height = im.size
+		super(Image, self).save(*args, **kwargs)
 
 class AlbumAdmin(admin.ModelAdmin):
 	search_fields = ["title"]

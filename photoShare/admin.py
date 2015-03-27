@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Album, AlbumAdmin, Tag, TagAdmin, Image, ImageAdmin
+from .models import *
 
 # Register your models here.
 admin.site.register(Album, AlbumAdmin)
