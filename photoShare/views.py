@@ -151,3 +151,48 @@ def search(request):
 	d = dict(results=results, user=request.user, albums=Album.objects.all(), prm=parameters, media_url=MEDIA_URL)
 	d.update(csrf(request))
 	return render_to_response('photo/search.html', d)
+
+def update_and_filter(images, p):
+	"""Update image data if changed, filter results through parameters and return results list."""
+	for k, d in images.items():
+		image = Image.objects.get(pk=k)
+		image.title = d['title']
+		image.rating = int(d['rating'])
+		
+		# tags - assign or create if a new tag!
+		tags = d['tags'].split(', ')
+		lst = []
+		for t in tags:
+			if t: lst.append(Tag.objects.get_or_create(tag=t)[0])
+		image.tags = lst
+		
+		if 'albums' in d:
+			image.albums = d['albums']
+		image.save()
+
+
+	# filter results by parameters
+	results = Image.objects.all()
+	if p['title']: results = results.filter(title__icontains=p['title'])
+	if p['filename']: results = results.filter(image__icontains=p['filename'])
+	if p['rating_from']: results = results.filter(rating__gte=int(p['rating_from']))
+	if p['rating_to']: results = results.filter(rating__lte=int(p['rating_to']))
+	if p['width_from']: results = results.filter(width__gte=int(p['width_from']))
+	if p['width_to']: results = results.filter(width__lte=int(p['width_to']))
+	if p['height_from']: results = results.filter(height__gte=int(p['height_from']))
+	if p['height_to']: results = results.filter(height__lte=int(p['height_to']))
+
+	if p['tags']:
+		tags = p['tags'].split(', ')
+		lst = []
+		for t in tags:
+			if t:
+				results = results.filter(tags=Tag.objects.get(tag=t))
+
+	if p['album']:
+		lst = p['album']
+		or_query = Q(albums=lst[0])
+		for album in lst[1:]:
+			or_query = or_query | Q(albums=album)
+		results = results.filter(or_query).distinct()
+	return results
