@@ -35,19 +35,19 @@
             <div class="title">{{ album.title }}</div>
                 <div class="right">
                 View:
-                <a href="{% url photo.views.album album.pk 'thumbnails' %}">thumbnails</a>
-                <a href="{% url photo.views.album album.pk 'full' %}">full</a>
-                <a href="{% url photo.views.album album.pk 'edit' %}">edit</a>
+                <a href="{% url 'photoShare.views.album' album.pk 'thumbnails' %}">thumbnails</a>
+                <a href="{% url 'photoShare.views.album' album.pk 'full' %}">full</a>
+                <a href="{% url 'photoShare.views.album' album.pk 'edit' %}">edit</a>
                 </div>
 
                 {% if view == "edit" %}
-                    <form action="{% url photo.views.update %}" method="POST">{% csrf_token %}
+                    <form action="{% url 'photoShare.views.update' %}" method="POST">{% csrf_token %}
                 {% endif %}
                 {% for img in images.object_list %}
 
                     <!-- FULL VIEW  -->
                     {% if view == "full" %}
-                        <a href="{% url photo.views.image img.pk %}"><img border="0" alt=""
+                        <a href="{% url 'photoShare.views.image' img.pk %}"><img border="0" alt=""
                             src="{{ media_url }}{{ img.image.name }}"
                             {% if img.width > 900 %}width="900"{% endif %} /></a>
                     {% endif %}
@@ -57,7 +57,7 @@
 
                         <table>
                         <tr><td>
-                        <a href="{% url photo.views.image img.pk %}"><img border="0" alt=""
+                        <a href="{% url 'photoShare.views.image' img.pk %}"><img border="0" alt=""
                             src="{{ media_url }}{{ img.thumbnail2.name }}" /></a>
                             </td>
                             <td>
@@ -78,7 +78,7 @@
 
                     <!-- THUMBNAILS VIEW  -->
                     {% if view == "thumbnails" %}
-                        <a href="{% url photo.views.image img.pk %}"><img border="0" alt=""
+                        <a href="{% url 'photoShare.views.image' img.pk %}"><img border="0" alt=""
                             src="{{ media_url }}{{ img.thumbnail2.name }}" /></a>
                     {% endif %}
                 {% endfor %}
