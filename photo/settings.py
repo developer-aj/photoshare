@@ -83,5 +83,5 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-MEDIA_ROOT = '/home/ajay/Desktop/photoshare/photoshare/photo/media'
+MEDIA_ROOT = '/home/ajay/Desktop/Django/photo/media'
 MEDIA_URL = 'http://127.0.0.1:8000/media/'

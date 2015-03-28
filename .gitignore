@@ -2,6 +2,7 @@ myvenv
 *.pyc
 *.*~
 *~
+media/
 staticfiles
 local_settings.py
 db.sqlite3
