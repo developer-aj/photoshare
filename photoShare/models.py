@@ -90,21 +90,3 @@ class Image(models.Model):
                                                             (self.image.name, self.thumbnail.name))
     thumbnail_.allow_tags = True
 
-
-### Admin
-
-class AlbumAdmin(admin.ModelAdmin):
-    search_fields = ["title"]
-    list_display = ["title", "images", "public"]
-
-class TagAdmin(admin.ModelAdmin):
-    list_display = ["tag"]
-
-class ImageAdmin(admin.ModelAdmin):
-    list_display = ["__unicode__", "title", "user", "rating", "size", "tags_", "albums_", "thumbnail_",
-                    "created"]
-    list_filter = ["tags", "albums", "user"]
-
-    def save_model(self, request, obj, form, change):
-        if not obj.user: obj.user = request.user
-        obj.save()

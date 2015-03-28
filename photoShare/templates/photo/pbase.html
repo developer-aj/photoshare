@@ -47,11 +47,11 @@
             {% block nav-global %}
 
                 <!-- MENU -->
-                <h3><a href="{% url photo.views.main %}">PhotoApp</a></h3>
+                <h3><a href="{% url 'photo.views.main' %}">PhotoApp</a></h3>
                 {% if user.is_staff %}
-                <a href="{% url admin:index %}">Admin</a>
-                <a href="{% url admin:photo_image_add %}">Add Image</a>
-                <a href="{% url photo.views.search %}">Search</a>
+                <a href="{% url 'admin:index' %}">Admin</a>
+                <a href="{% url 'admin:photo_image_add' %}">Add Image</a>
+                <a href="{% url 'photo.views.search' %}">Search</a>
                 {% endif %}
 
             {% endblock %}
