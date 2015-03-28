@@ -6,7 +6,7 @@ from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.forms import ModelForm
 from photo.settings import MEDIA_URL
 
-from dbe.photo.models import *
+from photoShare.models import *
 
 # Create your views here.
 
