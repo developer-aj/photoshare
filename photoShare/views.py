@@ -8,6 +8,8 @@ from photo.settings import MEDIA_URL
 
 from photoShare.models import *
 
+from django.db.models import Q
+
 # Create your views here.
 
 def main(request):
@@ -108,7 +110,7 @@ def search(request):
 	
 	# init parameters
 	parameters = {}
-	keys = "title filename rating_from rating_to width_from width_to height_from height_to tags view"
+	keys = "title filename rating_from rating_to width_from width_to height_from height_to tags view user sort asc_desc"
 	keys = keys.split()
 	for k in keys:
 		parameters[k] = ''
@@ -118,6 +120,9 @@ def search(request):
 	for k, v in p.items():
 		if k == 'album':
 			parameters[k] = [int(x) for x in p.getlist(k)]
+		elif k == 'user':
+			if v!= 'all': v = int(v)
+			parameters[k] = v
 		elif k in parameters:
 			parameters[k] = v
 		elif k.startswith('title') or k.startswith('rating') or k.startswith('tags'):
@@ -148,7 +153,7 @@ def search(request):
 		img.tag_lst = join(tags, ', ')
 		img.album_lst = [x[1] for x in img.albums.values_list()]
 	
-	d = dict(results=results, user=request.user, albums=Album.objects.all(), prm=parameters, media_url=MEDIA_URL)
+	d = dict(results=results, user=request.user, albums=Album.objects.all(), prm=parameters, users=User.objects.all(), media_url=MEDIA_URL)
 	d.update(csrf(request))
 	return render_to_response('photo/search.html', d)
 
@@ -170,9 +175,13 @@ def update_and_filter(images, p):
 			image.albums = d['albums']
 		image.save()
 
+	# sort and filter results by parameters
+	order = 'created'
+	if p['sort']: order = p['sort']
+	if p['asc_desc'] == 'desc': order = '-' + order
 
-	# filter results by parameters
-	results = Image.objects.all()
+	results = Image.objects.all().order_by(order)
+	if p['user'] and p['user'] != 'all': results = results.filter(user__pk=int(p['user']))
 	if p['title']: results = results.filter(title__icontains=p['title'])
 	if p['filename']: results = results.filter(image__icontains=p['filename'])
 	if p['rating_from']: results = results.filter(rating__gte=int(p['rating_from']))
