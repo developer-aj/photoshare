@@ -205,3 +205,9 @@ def update_and_filter(images, p):
 			or_query = or_query | Q(albums=album)
 		results = results.filter(or_query).distinct()
 	return results
+
+def get_image(request, fn):
+	fn = fn.encode("utf-8")
+	imgdir = pjoin(MEDIA_ROOT, "../images")
+	ifn = pjoin(imgdir, fn)
+	return HttpResponse(open(ifn).read(), mimetype='image/jpeg')
