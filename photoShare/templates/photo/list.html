@@ -34,8 +34,8 @@
                     ({{ album.image_set.count }} images)</div>
                 <ul>
                     {% for img in album.images %}
-                        <a href="{{ media_url }}{{ img.image.name }}"><img border="0" alt=""
-                            src="{{ media_url }}{{ img.thumbnail2.name }}" /></a>
+                        <a href="{{ media_url }}{{ img.image }}"><img border="0" alt=""
+                            src="{{ media_url }}{{ img.thumbnail2 }}" /></a>
                     {% endfor %}
                 </ul>
             {% endfor %}
