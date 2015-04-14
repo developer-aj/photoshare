@@ -52,7 +52,7 @@ class Image(models.Model):
 
         # large thumbnail
         fn, ext = os.path.splitext(self.image.name)
-        im.thumbnail((128,128), PImage.ANTIALIAS)
+        im.thumbnail((400,300), PImage.ANTIALIAS)
         thumb_fn = fn + "-thumb2" + ext
         tf2 = NamedTemporaryFile()
         im.save(tf2.name, "JPEG")

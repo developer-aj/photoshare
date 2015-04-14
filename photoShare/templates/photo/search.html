@@ -1,36 +1,7 @@
-{% extends "photo/pbase.html" %}
-
-{% block sidebar %} <style type="text/css"> </style> {% endblock %}
+{% extends "photo/base.html" %}
 
 {% block content %}
-    <style type="text/css">
-        .main { margin-left: 25px; margin-top: 30px; }
-        .step-links a { font-size: 0.89em; }
-        .title {
-            font-size: 1.4em; margin-top: 20px; border-bottom: 1px solid #ccc;
-            padding-left: 4px;
-        }
-        .messages { margin-left: 20px; }
-        .pagination { margin-top: 20px; margin-left: -20px; }
-        .center { text-align: center; margin: 4px; }
-        .form { border: 0px solid #ddd; margin: 3px; padding: 3px; top-margin: 6px; }
-
-        img { margin: 10px; padding: 5px; border: 1px solid #ccc; margin-bottom: 2px; }
-        td { text-align: right; }
-    </style>
-
-    <div class="main">
-
-        <!-- Messages  -->
-        {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-
-        <!-- Form  -->
+       <!-- Form  -->
         <ul>
             <div class="title">Search</div>
                 <form action="{% url 'photoShare.views.search' %}" method="POST">{% csrf_token %}

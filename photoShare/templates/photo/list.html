@@ -1,65 +1,26 @@
-{% extends "photo/pbase.html" %}
-
-{% block sidebar %} <style type="text/css"> </style> {% endblock %}
-
+{% extends 'photo/base.html' %}
+{% load staticfiles %}
 {% block content %}
-    <style type="text/css">
-        .main { margin-left: 25px; margin-top: 30px; }
-        .step-links a { font-size: 0.89em; }
-        .title {
-            font-size: 1.4em; margin-top: 20px; border-bottom: 1px solid #ccc;
-            padding-left: 4px;
-        }
-        .messages { margin-left: 20px; }
-        .pagination { margin-top: 20px; margin-left: -20px; }
+<!-- Page Content -->
+    <div class="container">
 
-        img { margin: 10px; padding: 5px; border: 1px solid #ccc; }
-    </style>
+        <div class="row">
 
-    <div class="main">
-
-        <!-- Messages  -->
-        {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-
-        <!-- Albums  -->
-        <ul>
-            {% for album in albums.object_list %}
-                <div class="title"><a href="{% url 'photoShare.views.album' album.pk %}">{{ album.title }}</a>
-                    ({{ album.image_set.count }} images)</div>
-                <ul>
-                    {% for img in album.images %}
-                        <a href="{{ media_url }}{{ img.image }}"><img border="0" alt=""
-                            src="{{ media_url }}{{ img.thumbnail2 }}" /></a>
-                    {% endfor %}
-                </ul>
-            {% endfor %}
-        </ul>
-
-        <!-- Next/Prev page links  -->
-        {% if albums.object_list and albums.paginator.num_pages > 1 %}
-        <div class="pagination">
-            <span class="step-links">
-                {% if albums.has_previous %}
-                    <a href= "?page={{ albums.previous_page_number }}">previous &lt;&lt; </a>
-                {% endif %}
-
-                <span class="current">
-                    &nbsp;Page {{ albums.number }} of {{ albums.paginator.num_pages }}
-                </span>
-
-                {% if albums.has_next %}
-                    <a href="?page={{ albums.next_page_number }}"> &gt;&gt; next</a>
-                {% endif %}
-            </span>
+            <div class="col-lg-12">
+                <h1 class="page-header">Thumbnail Gallery</h1>
+            </div>
+	{% for album in albums.object_list %}
+		{% for img in album.images %}
+            <div class="col-lg-3 col-md-4 col-xs-6 thumb">
+                <a class="thumbnail" href="{{ media_url }}{{ img.image }}">
+                    <img class="img-responsive" src="{{ media_url }}{{ img.thumbnail2 }}" alt="">
+                </a>
+            </div>
+		{% endfor %}
+	{% endfor %}
         </div>
-        {% endif %}
 
-    </div>
-
+        <hr>
 {% endblock %}
+
+
